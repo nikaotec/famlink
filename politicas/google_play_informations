@@ -1,0 +1,27 @@
+🇧🇷 Justificativa atualizada (para o Google Play Console)
+O FamLink requer acesso à localização em segundo plano para permitir o monitoramento contínuo e em tempo real dos membros da família, mesmo quando o aplicativo não está em uso ativo. Esse recurso é essencial para garantir a segurança e bem-estar dos usuários, permitindo que familiares acompanhem a localização de pessoas importantes, inclusive em situações de emergência.
+
+Detalhes do uso:
+A localização é coletada apenas com o consentimento do usuário e enquanto a funcionalidade de rastreamento estiver ativa.
+
+Os dados de localização são armazenados com segurança no Firebase por até 3 meses, exclusivamente para fins de histórico e análise pelos usuários autorizados. Após esse período, os dados são automaticamente apagados.
+
+As informações são utilizadas somente para exibir a localização atual e o histórico no mapa, visíveis apenas para membros da família autorizados.
+
+A coleta em segundo plano é necessária para garantir a continuidade e precisão do rastreamento, mesmo quando o app está em segundo plano.
+
+Nenhum dado é compartilhado com terceiros.
+
+🇺🇸 Updated Justification (for the Google Play Console)
+FamLink requires background location access to enable continuous, real-time tracking of family members, even when the app is not in active use. This feature is critical for ensuring the safety and well-being of users, allowing family members to monitor the location of loved ones — including in emergency situations.
+
+Usage details:
+Location is collected only with user consent and only while tracking is enabled.
+
+Location data is securely stored in Firebase for up to 3 months, exclusively for historical reference and review by authorized users. After this period, the data is automatically deleted.
+
+Data is used only to display current and historical locations on a map, visible to authorized family members.
+
+Background collection ensures accurate and continuous updates, even when the app is not in the foreground.
+
+No location data is shared with third parties.

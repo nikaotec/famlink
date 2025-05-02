@@ -1,43 +1,68 @@
 plugins {
     id("com.android.application")
-    // START: FlutterFire Configuration
     id("com.google.gms.google-services")
-    // END: FlutterFire Configuration
     id("kotlin-android")
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
 
 android {
     namespace = "com.avs.famlink"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = "27.0.12077973"
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8  // Alterado para 1.8
-        targetCompatibility = JavaVersion.VERSION_1_8 
-    }
-    kotlinOptions {
-         jvmTarget = "1.8"
-    }
+    compileSdk = 35
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.avs.famlink"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = 23
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        targetSdk = 35
+        versionCode = 1
+        versionName = "1.0"
+        multiDexEnabled = true
+
+//        ndk {
+//            abiFilters += listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+//        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    signingConfigs {
+        create("release") {
+            // Configure sua assinatura aqui para produção
+            // Exemplo:
+            // storeFile = file("keystore.jks")
+            // storePassword = "suaSenha"
+            // keyAlias = "seuAlias"
+            // keyPassword = "suaSenhaChave"
+        }
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
+
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
+    }
+}
+
+dependencies {
+    implementation("com.google.android.gms:play-services-location:21.3.0")
+    implementation("androidx.core:core-ktx:1.16.0")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("androidx.multidex:multidex:2.0.1")
+
+    // Solução 1: Usar versão estável recomendada do WebRTC SDK
+    implementation("io.github.webrtc-sdk:android:125.6422.03") {
+        exclude(group = "com.mesibo.api", module = "webrtc")
     }
 }
 
