@@ -1,8 +1,12 @@
 package com.avs.famlink
 
+import android.content.pm.PackageManager
 import android.os.Build
+import androidx.core.app.ActivityCompat
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
+import android.Manifest
+
 
 class MainActivity : FlutterActivity() {
 
@@ -46,7 +50,9 @@ class MainActivity : FlutterActivity() {
 
         when (requestCode) {
             LOCATION_PERMISSION_REQUEST_CODE -> {
-                val granted = grantResults.all { it == android.content.pm.PackageManager.PERMISSION_GRANTED }
+                val granted = grantResults.isNotEmpty() && grantResults.all {
+                    it == PackageManager.PERMISSION_GRANTED
+                }
                 if (granted) {
                     startLocationTracking()
                 } else {
@@ -55,9 +61,9 @@ class MainActivity : FlutterActivity() {
             }
 
             BACKGROUND_LOCATION_PERMISSION_REQUEST_CODE -> {
-                if (grantResults.isNotEmpty() &&
-                    grantResults[0] == android.content.pm.PackageManager.PERMISSION_GRANTED
-                ) {
+                val granted = grantResults.isNotEmpty() &&
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED
+                if (granted) {
                     LocationForegroundService.startService(this)
                 } else {
                     LocationPermissionHelper.showPermissionDeniedDialog(this)
@@ -65,6 +71,8 @@ class MainActivity : FlutterActivity() {
             }
         }
     }
+
+
 
     override fun onDestroy() {
         NativeBridge.eventSink = null

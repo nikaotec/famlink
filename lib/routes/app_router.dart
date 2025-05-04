@@ -16,7 +16,7 @@ class AppRouter {
           state.uri.toString() == '/register';
 
       if (!isLoggedIn && !isAuthRoute) return '/login';
-      if (isLoggedIn && isAuthRoute) return '/map';
+      if (isLoggedIn && isAuthRoute) return '/';
       return null;
     },
     routes: [

@@ -27,22 +27,21 @@ class LocationForegroundService : Service() {
         private const val TAG = "LocationForegroundSvc"
 
         fun startService(context: Context) {
+            Log.d(TAG, "Chamando startService()") // Adicione isso
             if (!hasRequiredPermissions(context)) {
-                Log.w(TAG, "Attempted to start service without permissions")
+                Log.w(TAG, "Permissões ausentes")
                 return
             }
-
-
-
             val intent = Intent(context, LocationForegroundService::class.java)
             try {
+                Log.d(TAG, "Iniciando serviço via intent")
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     context.startForegroundService(intent)
                 } else {
                     context.startService(intent)
                 }
             } catch (e: Exception) {
-                Log.e(TAG, "Failed to start service", e)
+                Log.e(TAG, "Erro ao iniciar serviço", e)
             }
         }
 
@@ -72,6 +71,7 @@ class LocationForegroundService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+        Log.d(TAG, "onCreate chamado")
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         initializeServices()
     }
@@ -83,6 +83,7 @@ class LocationForegroundService : Service() {
             }
 
             locationService = LocationService(applicationContext) { lat, lon ->
+                Log.d(TAG, "Localização recebida: $lat, $lon")
                 handleLocationUpdate(lat, lon)
             }
         } catch (e: Exception) {
@@ -158,7 +159,7 @@ class LocationForegroundService : Service() {
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle("Monitoramento Ativo")
             .setContentText(locationText)
-            .setSmallIcon(com.google.android.gms.base.R.drawable.common_google_signin_btn_icon_light)
+            .setSmallIcon(R.mipmap.ic_launcher)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setOngoing(true)
             .setOnlyAlertOnce(true)

@@ -30,28 +30,45 @@ class LocationService(
             }
 
             locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            val isGpsEnabled = locationManager?.isProviderEnabled(LocationManager.GPS_PROVIDER) ?: false
 
-            if (!isGpsEnabled) {
-                throw IllegalStateException("GPS provider is disabled")
+            val isGpsEnabled = locationManager?.isProviderEnabled(LocationManager.GPS_PROVIDER) ?: false
+            val isNetworkEnabled = locationManager?.isProviderEnabled(LocationManager.NETWORK_PROVIDER) ?: false
+
+            if (!isGpsEnabled && !isNetworkEnabled) {
+                throw IllegalStateException("No location provider is enabled")
             }
 
-            locationManager?.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER,
-                5000L,
-                5f,
-                this,
-                Looper.getMainLooper()
-            )
+            if (isGpsEnabled) {
+                locationManager?.requestLocationUpdates(
+                    LocationManager.GPS_PROVIDER,
+                    5000L,
+                    5f,
+                    this,
+                    Looper.getMainLooper()
+                )
+            }
+
+            if (isNetworkEnabled) {
+                locationManager?.requestLocationUpdates(
+                    LocationManager.NETWORK_PROVIDER,
+                    5000L,
+                    5f,
+                    this,
+                    Looper.getMainLooper()
+                )
+            }
 
             isListening = true
             Log.d(TAG, "Location updates started")
 
-            // Get last known location immediately
+            // Get last known location
             val lastLocation = locationManager?.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                ?: locationManager?.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+
             lastLocation?.let {
                 callback(it.latitude, it.longitude)
             }
+
         } catch (e: SecurityException) {
             Log.e(TAG, "SecurityException: ${e.message}")
             throw e
@@ -60,6 +77,7 @@ class LocationService(
             throw IllegalStateException("Failed to start location updates", e)
         }
     }
+
 
     fun stop() {
         try {

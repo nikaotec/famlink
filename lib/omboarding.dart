@@ -1,5 +1,6 @@
 import 'package:famlink/features/maps/map_page.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class Omboarding extends StatelessWidget {
   const Omboarding({super.key});
@@ -23,10 +24,7 @@ class Omboarding extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const MapPage()),
-                );
+                context.go('/map');
               },
               child: const Text('Começar'),
             ),
